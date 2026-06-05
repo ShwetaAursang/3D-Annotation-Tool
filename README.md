@@ -85,6 +85,17 @@ KITTI Vision Benchmark Suite
 * Export labeled data for computer vision and autonomous driving applications.
 * Use generated annotations for object detection and sensor fusion models.
 
+
+Module 1 – KITTI Data Loader: Developed a Python-based data loading module to parse KITTI RGB images, LiDAR point clouds, calibration files, and annotation labels. Implemented efficient file handling and structured data extraction to support visualization, sensor fusion, and annotation workflows.
+
+
+Module 2 – RGB Image Viewer: Developed an image visualization component using PyQt5 and OpenCV to display KITTI camera frames. Implemented image loading, rendering, resizing, and GUI integration to support interactive dataset exploration.
+
+
+Module 3 – LiDAR Point Cloud Viewer: Developed a 3D visualization module using Open3D to render KITTI Velodyne point clouds. Implemented point cloud loading, geometry updates, and interactive scene exploration for autonomous driving data analysis.
+
+
+
 ## Step 10: Future Enhancements
 
 * Automatic object detection using deep learning models.
