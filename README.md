@@ -36,4 +36,60 @@ KITTI Vision Benchmark Suite
 * Multi-camera support
 * BEV (Bird's Eye View) visualization
 
+# Project Workflow
+
+## Step 1: Load KITTI Dataset
+
+* Read RGB images from the KITTI image folder.
+* Load LiDAR point clouds from Velodyne binary files.
+* Parse calibration files and existing annotations.
+
+## Step 2: Initialize Application
+
+* Launch the PyQt5-based desktop interface.
+* Create panels for image viewing, point cloud visualization, and annotation controls.
+
+## Step 3: Visualize RGB Images
+
+* Display camera images using OpenCV.
+* Enable image navigation, zooming, and object inspection.
+
+## Step 4: Visualize LiDAR Point Clouds
+
+* Load and render 3D LiDAR data using Open3D.
+* Allow users to rotate, zoom, and explore the point cloud scene.
+
+## Step 5: Perform Sensor Calibration
+
+* Read KITTI calibration matrices.
+* Transform LiDAR coordinates into the camera coordinate system.
+
+## Step 6: Project LiDAR Points onto Images
+
+* Project 3D LiDAR points onto the RGB image plane.
+* Generate synchronized visualization between camera and LiDAR sensors.
+
+## Step 7: Create and Edit Annotations
+
+* Select objects within the scene.
+* Create, modify, and manage object annotations.
+* Support common object classes such as Car, Pedestrian, and Cyclist.
+
+## Step 8: Save Annotation Data
+
+* Store annotation information in KITTI-compatible format.
+* Maintain organized annotation files for future model training.
+
+## Step 9: Prepare Machine Learning Dataset
+
+* Export labeled data for computer vision and autonomous driving applications.
+* Use generated annotations for object detection and sensor fusion models.
+
+## Step 10: Future Enhancements
+
+* Automatic object detection using deep learning models.
+* 3D bounding box editing.
+* Bird's Eye View (BEV) visualization.
+* Semi-automatic annotation assistance.
+* Multi-sensor dataset support.
 
