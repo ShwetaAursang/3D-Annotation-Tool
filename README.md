@@ -85,17 +85,6 @@ KITTI Vision Benchmark Suite
 * Export labeled data for computer vision and autonomous driving applications.
 * Use generated annotations for object detection and sensor fusion models.
 
-
-Module 1 – KITTI Data Loader: Developed a Python-based data loading module to parse KITTI RGB images, LiDAR point clouds, calibration files, and annotation labels. Implemented efficient file handling and structured data extraction to support visualization, sensor fusion, and annotation workflows.
-
-
-Module 2 – RGB Image Viewer: Developed an image visualization component using PyQt5 and OpenCV to display KITTI camera frames. Implemented image loading, rendering, resizing, and GUI integration to support interactive dataset exploration.
-
-
-Module 3 – LiDAR Point Cloud Viewer: Developed a 3D visualization module using Open3D to render KITTI Velodyne point clouds. Implemented point cloud loading, geometry updates, and interactive scene exploration for autonomous driving data analysis.
-
-
-
 ## Step 10: Future Enhancements
 
 * Automatic object detection using deep learning models.
@@ -111,4 +100,19 @@ Module 3 – LiDAR Point Cloud Viewer: Developed a 3D visualization module using
 * Implemented sensor fusion using calibration matrices.
 * Created an annotation workflow for autonomous driving datasets.
 * Generated training-ready annotations for machine learning models.
+
+
+
+Module 1 – KITTI Data Loader: Developed a Python-based data loading module to parse KITTI RGB images, LiDAR point clouds, calibration files, and annotation labels. Implemented efficient file handling and structured data extraction to support visualization, sensor fusion, and annotation workflows.
+
+
+Module 2 – RGB Image Viewer: Developed an image visualization component using PyQt5 and OpenCV to display KITTI camera frames. Implemented image loading, rendering, resizing, and GUI integration to support interactive dataset exploration.
+
+
+Module 3 – LiDAR Point Cloud Viewer: Developed a 3D visualization module using Open3D to render KITTI Velodyne point clouds. Implemented point cloud loading, geometry updates, and interactive scene exploration for autonomous driving data analysis.
+
+
+Module 4 – Sensor Calibration: Implemented KITTI calibration processing by parsing projection, rectification, and LiDAR-to-camera transformation matrices. Developed coordinate transformation pipelines to align LiDAR point clouds with camera reference frames for sensor fusion and visualization.
+
+
 
