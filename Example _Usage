@@ -1,0 +1,24 @@
+from kitti_loader import KittiDataLoader
+
+dataset_path = "data/training"
+
+loader = KittiDataLoader(dataset_path)
+
+frame_id = 0
+
+# RGB Image
+image = loader.load_image(frame_id)
+
+# LiDAR
+points = loader.load_lidar(frame_id)
+
+# Calibration
+calib = loader.load_calibration(frame_id)
+
+# Labels
+labels = loader.load_labels(frame_id)
+
+print("Image Shape:", image.shape)
+print("LiDAR Points:", points.shape)
+print("Calibration Keys:", calib.keys())
+print("Objects:", len(labels))
