@@ -115,4 +115,7 @@ Module 3 – LiDAR Point Cloud Viewer: Developed a 3D visualization module using
 Module 4 – Sensor Calibration: Implemented KITTI calibration processing by parsing projection, rectification, and LiDAR-to-camera transformation matrices. Developed coordinate transformation pipelines to align LiDAR point clouds with camera reference frames for sensor fusion and visualization.
 
 
+Module 5 – LiDAR-to-Camera Projection: Implemented sensor fusion by transforming LiDAR points into camera coordinates and projecting them onto RGB images using KITTI calibration matrices. Added depth-aware visualization to improve scene understanding and annotation accuracy.
+
+
 
