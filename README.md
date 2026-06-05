@@ -121,5 +121,5 @@ Module 5 – LiDAR-to-Camera Projection: Implemented sensor fusion by transformi
 Module 6 – Annotation System: Developed an interactive annotation framework supporting mouse-based bounding box creation, object class selection, annotation visualization, and structured label storage. Implemented support for common autonomous driving classes including Car, Pedestrian, and Cyclist.
 
 
-
+Module 7 – Annotation Export: Implemented annotation export functionality for KITTI-compatible label generation. Developed structured file-writing utilities to convert user-created annotations into machine learning-ready datasets.
 
