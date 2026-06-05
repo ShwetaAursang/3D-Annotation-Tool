@@ -118,4 +118,8 @@ Module 4 – Sensor Calibration: Implemented KITTI calibration processing by par
 Module 5 – LiDAR-to-Camera Projection: Implemented sensor fusion by transforming LiDAR points into camera coordinates and projecting them onto RGB images using KITTI calibration matrices. Added depth-aware visualization to improve scene understanding and annotation accuracy.
 
 
+Module 6 – Annotation System: Developed an interactive annotation framework supporting mouse-based bounding box creation, object class selection, annotation visualization, and structured label storage. Implemented support for common autonomous driving classes including Car, Pedestrian, and Cyclist.
+
+
+
 
