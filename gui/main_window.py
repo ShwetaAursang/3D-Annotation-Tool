@@ -10,7 +10,11 @@ from PyQt5.QtWidgets import (
 from gui.image_viewer import ImageViewer
 from gui.lidar_viewer import LidarViewer
 from utils.kitti_loader import KittiDataLoader
-
+from utils.calibration import Calibration
+from utils.projection import Projection
+from utils.draw_projection import (
+    draw_projected_points
+)
 
 class MainWindow(QMainWindow):
 
@@ -131,44 +135,48 @@ class MainWindow(QMainWindow):
     # Load Current Frame
     # ----------------------------------
 
-    def load_frame(self):
+def load_frame(self):
 
-        try:
+    image = self.loader.load_image(
+        self.frame_id
+    )
 
-            image = self.loader.load_image(
-                self.frame_id
-            )
+    points = self.loader.load_lidar(
+        self.frame_id
+    )
 
-            self.image_viewer.display_image(
-                image
-            )
+    calib_file = (
+        f"data/training/calib/"
+        f"{self.frame_id:06d}.txt"
+    )
 
-            points = self.loader.load_lidar(
-                self.frame_id
-            )
+    calibration = Calibration(
+        calib_file
+    )
 
-            self.lidar_viewer.update_point_cloud(
-                points
-            )
+    projection = Projection(
+        calibration
+    )
 
-            self.frame_label.setText(
-                f"Frame: {self.frame_id}"
-            )
+    image_points, cam_points = (
+        projection.project_lidar_to_image(
+            points
+        )
+    )
 
-            print(
-                f"Loaded Frame {self.frame_id}"
-            )
+    image = draw_projected_points(
+        image,
+        image_points,
+        cam_points
+    )
 
-            print(
-                f"LiDAR Points: {points.shape[0]}"
-            )
+    self.image_viewer.display_image(
+        image
+    )
 
-        except Exception as e:
-
-            print(
-                "Error Loading Frame:",
-                e
-            )
+    self.lidar_viewer.update_point_cloud(
+        points
+    )
 
     # ----------------------------------
     # Next Frame
