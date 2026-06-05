@@ -2,57 +2,136 @@
 #This module displays KITTI RGB images inside the GUI.
 
 from PyQt5.QtWidgets import QLabel
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtGui import (
+    QPainter,
+    QPen,
+    QColor
+)
 
-import cv2
+from utils.annotation import Annotation
 
 
 class ImageViewer(QLabel):
 
     def __init__(self):
+
         super().__init__()
 
-        self.setAlignment(Qt.AlignCenter)
-        self.setText("No Image Loaded")
+        self.annotations = []
 
-    def display_image(self, image):
+        self.drawing = False
 
-        rgb_image = cv2.cvtColor(
-            image,
-            cv2.COLOR_BGR2RGB
-        )
+        self.start_point = QPoint()
+        self.end_point = QPoint()
 
-        h, w, ch = rgb_image.shape
+        self.current_class = "Car"
 
-        bytes_per_line = ch * w
+    # ------------------------------
+    # Mouse Press
+    # ------------------------------
 
-        q_image = QImage(
-            rgb_image.data,
-            w,
-            h,
-            bytes_per_line,
-            QImage.Format_RGB888
-        )
+    def mousePressEvent(
+        self,
+        event
+    ):
 
-        pixmap = QPixmap.fromImage(q_image)
+        if event.button() == Qt.LeftButton:
 
-        self.setPixmap(
-            pixmap.scaled(
-                self.width(),
-                self.height(),
-                Qt.KeepAspectRatio,
-                Qt.SmoothTransformation
+            self.drawing = True
+
+            self.start_point = event.pos()
+            self.end_point = event.pos()
+
+    # ------------------------------
+    # Mouse Move
+    # ------------------------------
+
+    def mouseMoveEvent(
+        self,
+        event
+    ):
+
+        if self.drawing:
+
+            self.end_point = event.pos()
+
+            self.update()
+
+    # ------------------------------
+    # Mouse Release
+    # ------------------------------
+
+    def mouseReleaseEvent(
+        self,
+        event
+    ):
+
+        if event.button() == Qt.LeftButton:
+
+            self.drawing = False
+
+            annotation = Annotation(
+                self.current_class,
+                self.start_point.x(),
+                self.start_point.y(),
+                self.end_point.x(),
+                self.end_point.y()
             )
+
+            self.annotations.append(
+                annotation
+            )
+
+            self.update()
+
+    # ------------------------------
+    # Paint Bounding Boxes
+    # ------------------------------
+
+    def paintEvent(
+        self,
+        event
+    ):
+
+        super().paintEvent(event)
+
+        painter = QPainter(self)
+
+        pen = QPen(
+            QColor(255, 0, 0)
         )
 
-    def resizeEvent(self, event):
-        if self.pixmap():
-            self.setPixmap(
-                self.pixmap().scaled(
-                    self.width(),
-                    self.height(),
-                    Qt.KeepAspectRatio,
-                    Qt.SmoothTransformation
-                )
+        pen.setWidth(2)
+
+        painter.setPen(pen)
+
+        # Existing annotations
+
+        for ann in self.annotations:
+
+            painter.drawRect(
+                ann.x1,
+                ann.y1,
+                ann.x2 - ann.x1,
+                ann.y2 - ann.y1
+            )
+
+            painter.drawText(
+                ann.x1,
+                ann.y1 - 5,
+                ann.class_name
+            )
+
+        # Current drawing
+
+        if self.drawing:
+
+            painter.drawRect(
+                self.start_point.x(),
+                self.start_point.y(),
+                self.end_point.x()
+                - self.start_point.x(),
+                self.end_point.y()
+                - self.start_point.y()
             )
