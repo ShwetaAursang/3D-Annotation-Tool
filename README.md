@@ -93,3 +93,11 @@ KITTI Vision Benchmark Suite
 * Semi-automatic annotation assistance.
 * Multi-sensor dataset support.
 
+
+# Results
+
+* Successfully visualized KITTI RGB images and LiDAR point clouds.
+* Implemented sensor fusion using calibration matrices.
+* Created an annotation workflow for autonomous driving datasets.
+* Generated training-ready annotations for machine learning models.
+
