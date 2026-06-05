@@ -4,17 +4,18 @@ from PyQt5.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QPushButton,
-    QLabel
+    QLabel,
+    QComboBox
 )
 
 from gui.image_viewer import ImageViewer
 from gui.lidar_viewer import LidarViewer
+
 from utils.kitti_loader import KittiDataLoader
 from utils.calibration import Calibration
 from utils.projection import Projection
-from utils.draw_projection import (
-    draw_projected_points
-)
+from utils.draw_projection import draw_projected_points
+
 
 class MainWindow(QMainWindow):
 
@@ -26,7 +27,7 @@ class MainWindow(QMainWindow):
             "KITTI 3D Annotation Tool"
         )
 
-        self.resize(1200, 800)
+        self.resize(1400, 900)
 
         # Dataset Path
         self.dataset_path = "data/training"
@@ -34,7 +35,7 @@ class MainWindow(QMainWindow):
         # Current Frame
         self.frame_id = 0
 
-        # Load KITTI Dataset
+        # Dataset Loader
         self.loader = KittiDataLoader(
             self.dataset_path
         )
@@ -46,10 +47,16 @@ class MainWindow(QMainWindow):
 
         # Viewers
         self.image_viewer = ImageViewer()
-        self.lidar_viewer = LidarViewer()
 
-        # Build GUI
+        self.lidar_viewer = (
+            LidarViewer()
+        )
+
         self.init_ui()
+
+    # -----------------------------------
+    # UI
+    # -----------------------------------
 
     def init_ui(self):
 
@@ -61,9 +68,9 @@ class MainWindow(QMainWindow):
 
         main_layout = QVBoxLayout()
 
-        # ----------------------------------
-        # Frame Information
-        # ----------------------------------
+        # ---------------------------
+        # Frame Label
+        # ---------------------------
 
         self.frame_label = QLabel(
             f"Frame: {self.frame_id}"
@@ -73,9 +80,33 @@ class MainWindow(QMainWindow):
             self.frame_label
         )
 
-        # ----------------------------------
+        # ---------------------------
+        # Class Selector
+        # ---------------------------
+
+        self.class_selector = (
+            QComboBox()
+        )
+
+        self.class_selector.addItems(
+            [
+                "Car",
+                "Pedestrian",
+                "Cyclist"
+            ]
+        )
+
+        self.class_selector.currentTextChanged.connect(
+            self.change_class
+        )
+
+        main_layout.addWidget(
+            self.class_selector
+        )
+
+        # ---------------------------
         # Buttons
-        # ----------------------------------
+        # ---------------------------
 
         button_layout = QHBoxLayout()
 
@@ -91,6 +122,10 @@ class MainWindow(QMainWindow):
             "Next Frame"
         )
 
+        self.print_button = QPushButton(
+            "Show Annotations"
+        )
+
         self.prev_button.clicked.connect(
             self.previous_frame
         )
@@ -101,6 +136,10 @@ class MainWindow(QMainWindow):
 
         self.next_button.clicked.connect(
             self.next_frame
+        )
+
+        self.print_button.clicked.connect(
+            self.show_annotations
         )
 
         button_layout.addWidget(
@@ -115,13 +154,17 @@ class MainWindow(QMainWindow):
             self.next_button
         )
 
+        button_layout.addWidget(
+            self.print_button
+        )
+
         main_layout.addLayout(
             button_layout
         )
 
-        # ----------------------------------
-        # RGB Viewer
-        # ----------------------------------
+        # ---------------------------
+        # Image Viewer
+        # ---------------------------
 
         main_layout.addWidget(
             self.image_viewer
@@ -131,56 +174,108 @@ class MainWindow(QMainWindow):
             main_layout
         )
 
-    # ----------------------------------
-    # Load Current Frame
-    # ----------------------------------
+    # -----------------------------------
+    # Change Annotation Class
+    # -----------------------------------
 
-def load_frame(self):
+    def change_class(
+        self,
+        text
+    ):
 
-    image = self.loader.load_image(
-        self.frame_id
-    )
-
-    points = self.loader.load_lidar(
-        self.frame_id
-    )
-
-    calib_file = (
-        f"data/training/calib/"
-        f"{self.frame_id:06d}.txt"
-    )
-
-    calibration = Calibration(
-        calib_file
-    )
-
-    projection = Projection(
-        calibration
-    )
-
-    image_points, cam_points = (
-        projection.project_lidar_to_image(
-            points
+        self.image_viewer.current_class = (
+            text
         )
-    )
 
-    image = draw_projected_points(
-        image,
-        image_points,
-        cam_points
-    )
+    # -----------------------------------
+    # Load Frame
+    # -----------------------------------
 
-    self.image_viewer.display_image(
-        image
-    )
+    def load_frame(self):
 
-    self.lidar_viewer.update_point_cloud(
-        points
-    )
+        try:
 
-    # ----------------------------------
+            # RGB Image
+            image = (
+                self.loader.load_image(
+                    self.frame_id
+                )
+            )
+
+            # LiDAR
+            points = (
+                self.loader.load_lidar(
+                    self.frame_id
+                )
+            )
+
+            # Calibration File
+            calib_file = (
+                f"{self.dataset_path}/calib/"
+                f"{self.frame_id:06d}.txt"
+            )
+
+            calibration = (
+                Calibration(
+                    calib_file
+                )
+            )
+
+            projection = (
+                Projection(
+                    calibration
+                )
+            )
+
+            image_points, cam_points = (
+                projection.project_lidar_to_image(
+                    points
+                )
+            )
+
+            projected_image = (
+                draw_projected_points(
+                    image,
+                    image_points,
+                    cam_points
+                )
+            )
+
+            # Display Image
+            self.image_viewer.display_image(
+                projected_image
+            )
+
+            # Display Point Cloud
+            self.lidar_viewer.update_point_cloud(
+                points
+            )
+
+            self.frame_label.setText(
+                f"Frame: "
+                f"{self.frame_id}"
+            )
+
+            print(
+                f"Loaded Frame "
+                f"{self.frame_id}"
+            )
+
+            print(
+                f"LiDAR Points: "
+                f"{points.shape[0]}"
+            )
+
+        except Exception as e:
+
+            print(
+                "Load Error:",
+                e
+            )
+
+    # -----------------------------------
     # Next Frame
-    # ----------------------------------
+    # -----------------------------------
 
     def next_frame(self):
 
@@ -192,9 +287,9 @@ def load_frame(self):
 
             self.load_frame()
 
-    # ----------------------------------
+    # -----------------------------------
     # Previous Frame
-    # ----------------------------------
+    # -----------------------------------
 
     def previous_frame(self):
 
@@ -204,12 +299,47 @@ def load_frame(self):
 
             self.load_frame()
 
-    # ----------------------------------
+    # -----------------------------------
+    # Show Annotations
+    # -----------------------------------
+
+    def show_annotations(self):
+
+        annotations = (
+            self.image_viewer.annotations
+        )
+
+        print(
+            "\n========== "
+            "ANNOTATIONS "
+            "=========="
+        )
+
+        for ann in annotations:
+
+            print(
+                ann.to_dict()
+            )
+
+        print(
+            "========================\n"
+        )
+
+    # -----------------------------------
     # Close Application
-    # ----------------------------------
+    # -----------------------------------
 
-    def closeEvent(self, event):
+    def closeEvent(
+        self,
+        event
+    ):
 
-        self.lidar_viewer.close()
+        try:
+
+            self.lidar_viewer.close()
+
+        except:
+
+            pass
 
         event.accept()
