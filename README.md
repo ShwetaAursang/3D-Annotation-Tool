@@ -125,4 +125,7 @@ Module 7 – Annotation Export: Implemented annotation export functionality for 
 
 Module 8 – Machine Learning Assisted Annotation: Integrated a pretrained YOLO-based object detector to automatically generate object annotations from RGB images. Implemented semi-automatic labeling workflows that allow users to review, modify, and export machine learning-ready annotations.
 
+Module 9 – Bird's Eye View Visualization: Developed a top-down LiDAR visualization module by converting point cloud data into a Bird's Eye View representation. Implemented spatial filtering and occupancy mapping to improve scene understanding and support autonomous driving annotation workflows.
+
+
 
