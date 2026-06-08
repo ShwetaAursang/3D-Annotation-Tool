@@ -31,6 +31,7 @@ from gui.bev_viewer import (
 from utils.bev_generator import (
     BEVGenerator
 )
+from PyQt5.QtCore import Qt
 
 class MainWindow(QMainWindow):
 
@@ -468,6 +469,98 @@ class MainWindow(QMainWindow):
     except Exception as e:
 
         print(e)
+    def keyPressEvent(
+    self,
+    event
+):
+
+    box = (
+        self.selection_manager
+        .get_selected_box()
+    )
+
+    if box is None:
+        return
+
+    key = event.key()
+
+    if key == Qt.Key_W:
+
+        box.z += 0.5
+
+    elif key == Qt.Key_S:
+
+        box.z -= 0.5
+
+    elif key == Qt.Key_A:
+
+        box.x -= 0.5
+
+    elif key == Qt.Key_D:
+
+        box.x += 0.5
+
+    elif key == Qt.Key_Q:
+
+        box.rotation_y -= 0.1
+
+    elif key == Qt.Key_E:
+
+        box.rotation_y += 0.1
+
+    self.update_box_view()
+    def update_box_view(self):
+
+    image = self.loader.load_image(
+        self.frame_id
+    )
+
+    points = self.loader.load_lidar(
+        self.frame_id
+    )
+
+    box = (
+        self.selection_manager
+        .get_selected_box()
+    )
+
+    corners = box.get_corners()
+
+    projected = project_box(
+        corners,
+        self.calibration
+    )
+
+    image = draw_box3d(
+        image,
+        projected
+    )
+
+    self.image_viewer.display_image(
+        image
+    )
+
+    self.lidar_viewer.update_point_cloud(
+        points
+    )
+    def delete_selected_box(
+    self
+):
+
+    box = (
+        self.selection_manager
+        .get_selected_box()
+    )
+
+    if box:
+
+        self.box_manager.boxes.remove(
+            box
+        )
+
+        self.selection_manager.clear_selection()
+
+        self.update_box_view()
     # ==================================================
     # Close Application
     # ==================================================
