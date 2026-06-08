@@ -318,7 +318,29 @@ class MainWindow(QMainWindow):
             self.bev_viewer.display_bev(
                 bev
             )
-
+            #Test Pipeline
+            box = BoundingBox3D(
+            "Car",
+            15,
+            0,
+            20,
+            4.2,
+            1.8,
+            1.6,
+            0
+            )
+            
+            corners = box.get_corners()
+            
+            projected = project_box(
+                corners,
+                calibration
+            )
+            
+            projected_image = draw_box3d(
+                projected_image,
+                projected
+            )
         except Exception as e:
 
             QMessageBox.critical(
