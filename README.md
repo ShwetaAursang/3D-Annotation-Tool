@@ -123,3 +123,6 @@ Module 6 – Annotation System: Developed an interactive annotation framework su
 
 Module 7 – Annotation Export: Implemented annotation export functionality for KITTI-compatible label generation. Developed structured file-writing utilities to convert user-created annotations into machine learning-ready datasets.
 
+Module 8 – Machine Learning Assisted Annotation: Integrated a pretrained YOLO-based object detector to automatically generate object annotations from RGB images. Implemented semi-automatic labeling workflows that allow users to review, modify, and export machine learning-ready annotations.
+
+
