@@ -149,4 +149,11 @@ flowchart TD
     G --> H[Export Labels]
 ```
 
-
+```mermaid
+flowchart LR
+    A[Load Dataset] --> B[Load RGB Image]
+    B --> C[Load Point Cloud]
+    C --> D[Create Annotation]
+    D --> E[Validate Labels]
+    E --> F[Save Annotation]
+```
