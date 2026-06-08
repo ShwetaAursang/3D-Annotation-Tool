@@ -129,6 +129,7 @@ Module 9 – Bird's Eye View Visualization: Developed a top-down LiDAR visualiza
 
 Module 10 – 3D Bounding Box Annotation: Developed 3D bounding box representations for autonomous driving objects using LiDAR-derived spatial information. Implemented 3D box generation, projection onto RGB images, and visualization pipelines to support advanced object annotation and sensor fusion workflows.
 
+Module 11 – Interactive 3D Editing: Implemented point-cloud-driven object selection and interactive 3D bounding box manipulation. Developed translation, rotation, resizing, and deletion tools with synchronized updates across RGB, LiDAR, and Bird’s Eye View visualizations.
 
 
 
