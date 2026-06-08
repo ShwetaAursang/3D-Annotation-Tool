@@ -17,6 +17,13 @@ from utils.calibration import Calibration
 from utils.projection import Projection
 from utils.draw_projection import draw_projected_points
 from utils.export_kitti import KittiExporter
+from ml.detector import (
+    ObjectDetector
+)
+
+from ml.auto_annotation import (
+    AutoAnnotator
+)
 
 
 class MainWindow(QMainWindow):
@@ -55,9 +62,17 @@ class MainWindow(QMainWindow):
         # Viewers
         self.image_viewer = ImageViewer()
         self.lidar_viewer = LidarViewer()
-
+        
         self.init_ui()
-
+        self.detector = (
+            ObjectDetector()
+        )
+        
+        self.auto_annotator = (
+            AutoAnnotator(
+                self.detector
+            )
+        )
     # ==================================================
     # UI
     # ==================================================
@@ -83,7 +98,17 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(
             self.frame_label
         )
-
+        self.auto_button = QPushButton(
+            "Auto Annotate"
+        )
+        
+        self.auto_button.clicked.connect(
+            self.auto_annotate
+        )
+        
+        button_layout.addWidget(
+            self.auto_button
+        )
         # ----------------------------------
         # Class Selector
         # ----------------------------------
@@ -365,7 +390,38 @@ class MainWindow(QMainWindow):
                 "Export Error",
                 str(e)
             )
+    def auto_annotate(self):
 
+    try:
+
+        image = (
+            self.loader.load_image(
+                self.frame_id
+            )
+        )
+
+        annotations = (
+            self.auto_annotator
+            .generate_annotations(
+                image
+            )
+        )
+
+        self.image_viewer.annotations = (
+            annotations
+        )
+
+        self.image_viewer.update()
+
+        print(
+            f"Generated "
+            f"{len(annotations)} "
+            f"annotations"
+        )
+
+    except Exception as e:
+
+        print(e)
     # ==================================================
     # Close Application
     # ==================================================
