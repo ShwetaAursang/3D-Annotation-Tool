@@ -24,7 +24,13 @@ from ml.detector import (
 from ml.auto_annotation import (
     AutoAnnotator
 )
+from gui.bev_viewer import (
+    BEVViewer
+)
 
+from utils.bev_generator import (
+    BEVGenerator
+)
 
 class MainWindow(QMainWindow):
 
@@ -72,6 +78,13 @@ class MainWindow(QMainWindow):
             AutoAnnotator(
                 self.detector
             )
+        )
+        self.bev_viewer = (
+            BEVViewer()
+        )
+        
+        self.bev_generator = (
+            BEVGenerator()
         )
     # ==================================================
     # UI
@@ -200,7 +213,9 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(
             button_layout
         )
-
+        main_layout.addWidget(
+            self.bev_viewer
+        )
         # ----------------------------------
         # Image Viewer
         # ----------------------------------
@@ -293,6 +308,15 @@ class MainWindow(QMainWindow):
             print(
                 f"LiDAR Points: "
                 f"{lidar_points.shape[0]}"
+            )
+            bev = (
+                self.bev_generator.generate(
+                    lidar_points
+                )
+            )
+            
+            self.bev_viewer.display_bev(
+                bev
             )
 
         except Exception as e:
