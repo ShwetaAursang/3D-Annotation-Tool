@@ -127,5 +127,8 @@ Module 8 – Machine Learning Assisted Annotation: Integrated a pretrained YOLO-
 
 Module 9 – Bird's Eye View Visualization: Developed a top-down LiDAR visualization module by converting point cloud data into a Bird's Eye View representation. Implemented spatial filtering and occupancy mapping to improve scene understanding and support autonomous driving annotation workflows.
 
+Module 10 – 3D Bounding Box Annotation: Developed 3D bounding box representations for autonomous driving objects using LiDAR-derived spatial information. Implemented 3D box generation, projection onto RGB images, and visualization pipelines to support advanced object annotation and sensor fusion workflows.
+
+
 
 
