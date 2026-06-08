@@ -132,4 +132,21 @@ Module 10 – 3D Bounding Box Annotation: Developed 3D bounding box representati
 Module 11 – Interactive 3D Editing: Implemented point-cloud-driven object selection and interactive 3D bounding box manipulation. Developed translation, rotation, resizing, and deletion tools with synchronized updates across RGB, LiDAR, and Bird’s Eye View visualizations.
 
 
+## System Architecture
+
+```mermaid
+flowchart TD
+    A[KITTI Dataset] --> B[Dataset Loader]
+    B --> C[RGB Image Viewer]
+    B --> D[LiDAR Point Cloud Viewer]
+
+    C --> E[2D Bounding Box Annotation]
+    D --> F[3D Bounding Box Annotation]
+
+    E --> G[Annotation Manager]
+    F --> G
+
+    G --> H[Export Labels]
+```
+
 
